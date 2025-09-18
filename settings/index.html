@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- The '/homey.js' script must be included in your settings view to work -->
+  <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+
+    .footer {
+      text-align: center;
+      margin-left: 10px;
+      margin-right: 10px;
+      margin-top: auto;
+    }
+
+    .homey-button-primary-full {
+      margin-top: auto;
+      align-self: center;
+      margin-bottom: 10px;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="content">
+    <header class="homey-header">
+      <p class="homey-subtitle">Configura la tua API Key di Google Gemini</p>
+    </header>
+
+    <fieldset class="homey-form-fieldset">
+      
+      <div class="homey-form-group">
+        <label class="homey-form-label" for="apiKey">API Key di Gemini</label>
+        <input class="homey-form-input" id="apiKey" type="text" placeholder="Inserisci la tua API Key di Google Gemini" />
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="footer">
+    <button id="save" class="homey-button-primary-full">Salva</button>
+  </div>
+
+  <script type="text/javascript">
+    // a method named 'onHomeyReady' must be present in your code
+    function onHomeyReady(Homey) {
+      // Tell Homey we're ready to be displayed
+      Homey.ready();
+
+      var apiKeyElement = document.getElementById("apiKey");
+      var saveElement = document.getElementById("save");
+
+      // Carica l'API Key salvata dalle impostazioni di Homey
+      Homey.get("gemini_api_key", function (err, apiKey) {
+        if (err) return console.error("Errore nel caricamento dell'API Key:", err);
+        if (apiKey) {
+          apiKeyElement.value = apiKey;
+        }
+      });
+
+      saveElement.addEventListener("click", function (e) {
+        var apiKey = apiKeyElement.value.trim();
+        
+        if (!apiKey) {
+          Homey.alert("Inserisci una API Key valida");
+          return;
+        }
+
+        // Salva l'API Key nelle impostazioni di Homey
+        Homey.set("gemini_api_key", apiKey, function (err) {
+          if (err) return Homey.alert("Errore nel salvataggio: " + err);
+          Homey.alert("API Key salvata con successo!");
+        });
+      });
+    }
+  </script>
+</body>
+
+</html>

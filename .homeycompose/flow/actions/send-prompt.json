@@ -1,0 +1,34 @@
+{
+  "title": {
+    "en": "Send Prompt",
+    "it": "Invia Prompt"
+  },
+  "hint": {
+    "en": "Send a prompt to Gemini",
+    "it": "Invia un prompt a Gemini"
+  },
+  "titleFormatted": {
+        "en": "Send the prompt [[prompt]]",
+        "it": "Invia il prompt [[prompt]]"
+      },
+  "args": [
+    {
+      "type": "text",
+      "name": "prompt",
+      "placeholder": {
+        "en": "Text a Gemini prompt",
+        "it": "Scrivi un prompt per Gemini"
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "name": "answer",
+      "type": "string",
+      "title": {
+        "en": "Gemini answer",
+        "it": "Risposta di Gemini"
+      }
+    }
+  ]
+}

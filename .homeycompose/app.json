@@ -1,0 +1,30 @@
+{
+  "id": "com.dimapp.geminiforhomey",
+  "version": "1.0.0",
+  "compatibility": ">=12.4.0",
+  "sdk": 3,
+  "platforms": [
+    "local",
+    "cloud"
+  ],
+  "name": {
+    "en": "Gemini for Homey"
+  },
+  "description": {
+    "en": "Send prompts to Google Gemini from Homey Flows and use the AI’s answer in your automations."
+  },
+  "category": [
+    "tools"
+  ],
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Simone Di Maio",
+    "email": "simone.dimaio77@gmail.com"
+  },
+  "brandColor": "#1f6ac1"
+}

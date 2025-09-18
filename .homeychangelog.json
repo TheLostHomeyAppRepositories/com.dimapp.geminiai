@@ -1,0 +1,6 @@
+{
+  "1.0.0": {
+    "en": "- Initial release\n- \"Send Prompt\" Flow Action\n- Google Gemini 1.5 Flash integration\n- Multi-language support (English/Italian)\n- Settings interface for API key configuration",
+    "it": "- Rilascio iniziale\n- Flow Action \"Invia Prompt\"\n- Integrazione con Google Gemini 1.5 Flash\n- Supporto multilingue (Inglese/Italiano)\n- Interfaccia di configurazione della API Key"
+  }
+}
