@@ -5,14 +5,13 @@
   "compatibility": ">=12.4.0",
   "sdk": 3,
   "platforms": [
-    "local",
-    "cloud"
+    "local"
   ],
   "name": {
-    "en": "Gemini for Homey"
+    "en": "Gemini AI"
   },
   "description": {
-    "en": "Use LLM Gemini in Homey Flow"
+    "en": "Use Google Gemini prompts in your Homey Flows"
   },
   "category": [
     "tools"
@@ -28,6 +27,10 @@
     "email": "simone.dimaio77@gmail.com"
   },
   "brandColor": "#1f6ac1",
+  "source": "https://github.com/s-dimaio/com.dimapp.geminiforhomey",
+  "bugs": {
+    "url": "https://github.com/s-dimaio/com.dimapp.geminiforhomey/issues"
+  },
   "flow": {
     "actions": [
       {

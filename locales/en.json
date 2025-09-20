@@ -1,1 +1,21 @@
-{}
+{
+    "settings": {
+        "subtitle": "Gemini AI Settings",
+        "api": {
+            "label": "API Key",
+            "placeholder": "Insert your Google Gemini API Key here"
+        },
+        "button": "Save",
+        "saved": "API Key saved successfully!",
+        "error": {
+            "generic": "Error saving Gemini API Key",
+            "api": "Please insert a valid Gemini API Key"
+        }
+    },
+    "prompt": {
+        "error": {
+            "noapi": "Gemini API key not found in settings",
+            "generic": "Error sending Gemini prompt: __error__"
+        }
+    }
+}

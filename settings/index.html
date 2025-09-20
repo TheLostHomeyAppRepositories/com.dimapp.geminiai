@@ -42,20 +42,20 @@
 <body>
   <div class="content">
     <header class="homey-header">
-      <p class="homey-subtitle">Configura la tua API Key di Google Gemini</p>
+      <p class="homey-subtitle" data-i18n="settings.subtitle"></p>
     </header>
 
     <fieldset class="homey-form-fieldset">
-      
+
       <div class="homey-form-group">
-        <label class="homey-form-label" for="apiKey">API Key di Gemini</label>
-        <input class="homey-form-input" id="apiKey" type="text" placeholder="Inserisci la tua API Key di Google Gemini" />
+        <label class="homey-form-label" for="apiKey" data-i18n="settings.api.label"></label>
+        <input class="homey-form-input" id="apiKey" type="text" />
       </div>
     </fieldset>
   </div>
 
   <div class="footer">
-    <button id="save" class="homey-button-primary-full">Salva</button>
+    <button id="save" class="homey-button-primary-full" data-i18n="settings.button"></button>
   </div>
 
   <script type="text/javascript">
@@ -63,8 +63,10 @@
     function onHomeyReady(Homey) {
       // Tell Homey we're ready to be displayed
       Homey.ready();
-
+  
       var apiKeyElement = document.getElementById("apiKey");
+      apiKeyElement.placeholder = Homey.__("settings.api.placeholder");
+
       var saveElement = document.getElementById("save");
 
       // Carica l'API Key salvata dalle impostazioni di Homey
@@ -77,16 +79,16 @@
 
       saveElement.addEventListener("click", function (e) {
         var apiKey = apiKeyElement.value.trim();
-        
+
         if (!apiKey) {
-          Homey.alert("Inserisci una API Key valida");
+          Homey.alert(Homey.__("settings.error.api"));
           return;
         }
 
         // Salva l'API Key nelle impostazioni di Homey
         Homey.set("gemini_api_key", apiKey, function (err) {
-          if (err) return Homey.alert("Errore nel salvataggio: " + err);
-          Homey.alert("API Key salvata con successo!");
+          if (err) return Homey.alert(Homey.__("settings.error.generic") + ": " + err);
+          Homey.alert(Homey.__("settings.saved"));
         });
       });
     }

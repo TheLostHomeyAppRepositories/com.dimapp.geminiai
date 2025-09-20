@@ -1,4 +1,4 @@
-# Gemini for Homey
+# Gemini AI
 
 **Send prompts to Google Gemini from Homey Flows and use the AI's answer in your automations.**
 
