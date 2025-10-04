@@ -1,6 +1,6 @@
 {
-  "id": "com.dimapp.geminiforhomey",
-  "version": "1.0.0",
+  "id": "com.dimapp.geminiai",
+  "version": "1.0.3",
   "compatibility": ">=12.4.0",
   "sdk": 3,
   "platforms": [
@@ -10,7 +10,8 @@
     "en": "Gemini AI"
   },
   "description": {
-    "en": "Use Google Gemini prompts in your Homey Flows"
+    "en": "Use Google Gemini prompts in your Homey Flows",
+    "it": "Utilizza i prompt di Google Gemini nei tuoi Flows"
   },
   "category": [
     "tools"
@@ -26,8 +27,22 @@
     "email": "simone.dimaio77@gmail.com"
   },
   "brandColor": "#1f6ac1",
-  "source": "https://github.com/s-dimaio/com.dimapp.geminiforhomey",
+  "source": "https://github.com/s-dimaio/com.dimapp.geminiai",
   "bugs": {
-    "url": "https://github.com/s-dimaio/com.dimapp.geminiforhomey/issues"
+    "url": "https://github.com/s-dimaio/com.dimapp.geminiai/issues"
+  },
+  "tags": {
+    "en": [
+      "Gemini",
+      "Gemini AI",
+      "Gemini Prompt"
+    ]
+  },
+  "contributing": {
+    "donate": {
+      "paypal": {
+        "username": "sdimaio77"
+      }
+    }
   }
 }
