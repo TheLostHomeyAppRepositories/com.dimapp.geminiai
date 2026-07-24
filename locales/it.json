@@ -40,10 +40,12 @@
                 "flash_lite": "Gemini 2.5 Flash-Lite",
                 "flash": "Gemini 2.5 Flash",
                 "pro": "Gemini 2.5 Pro",
-                "flash35": "Gemini 3.5 Flash",
                 "flash3_preview": "Gemini 3 Flash Preview",
                 "flash3_lite": "Gemini 3.1 Flash-Lite",
-                "pro3_preview": "Gemini 3.1 Pro Preview"
+                "pro3_preview": "Gemini 3.1 Pro Preview",
+                "flash35_lite": "Gemini 3.5 Flash-Lite",
+                "flash35": "Gemini 3.5 Flash",
+                "flash36": "Gemini 3.6 Flash"
             },
             "pool_size_label": "Numero Immagini Simultanee",
             "pool_size_help": "Numero di immagini pre-allocate per richieste simultanee 'Invia Prompt con Immagine'. Un numero elevato assorbe molta memoria con rischio di crash dell'app. Ogni modifica richiede il riavvio dell'app per avere effetto.",

@@ -190,5 +190,13 @@
   "3.3.4": {
     "en": "(i) Minor bug fixes and performance improvements.",
     "it": "(i) Correzione di bug minori e miglioramenti alle prestazioni."
+  },
+  "3.3.5": {
+    "en": "(i) Minor bug fixes and performance improvements.",
+    "it": "(i) Correzione di bug minori e miglioramenti alle prestazioni."
+  },
+  "3.3.6": {
+    "en": "(i) Added support for the latest Gemini models (Gemini 3.6 Flash and Gemini 3.5 Flash-Lite) \n(ii) Organized model selection in app settings by model family.",
+    "it": "(i) Aggiunto il supporto per i modelli Gemini più recenti (Gemini 3.6 Flash e Gemini 3.5 Flash-Lite) \n(ii) Organizzata la selezione dei modelli nelle impostazioni dell'app per famiglia."
   }
 }
