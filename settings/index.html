@@ -5,12 +5,42 @@
   <!-- The '/homey.js' script must be included in your settings view to work -->
   <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
   <style>
+    :root {
+      --brand-color: #1f6ac1;
+      --brand-color-hover: #17549c;
+      --brand-color-light: rgba(31, 106, 193, 0.1);
+      --bg-card: rgba(255, 255, 255, 0.5);
+      --bg-card-hover: rgba(0, 0, 0, 0.04);
+      --bg-back-btn: #ffffff;
+      --bg-instructions: rgba(0, 0, 0, 0.03);
+      --bg-readonly-input: rgba(0, 0, 0, 0.02);
+      --text-primary: #333333;
+      --text-secondary: #666666;
+      --border-color: rgba(0, 0, 0, 0.1);
+      --border-light: rgba(0, 0, 0, 0.05);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-card: rgba(44, 44, 46, 0.7);
+        --bg-card-hover: rgba(255, 255, 255, 0.06);
+        --bg-back-btn: #2c2c2e;
+        --bg-instructions: rgba(255, 255, 255, 0.04);
+        --bg-readonly-input: rgba(255, 255, 255, 0.04);
+        --text-primary: #f2f2f7;
+        --text-secondary: #aeaeb2;
+        --border-color: rgba(255, 255, 255, 0.12);
+        --border-light: rgba(255, 255, 255, 0.06);
+      }
+    }
+
     body {
       display: flex;
       flex-direction: column;
       min-height: 100vh;
       margin: 0;
       overflow-x: hidden;
+      color: var(--text-primary);
     }
 
     .content {
@@ -49,7 +79,7 @@
     .instructions-section {
       margin-top: 20px;
       padding: 15px;
-      background-color: rgba(0, 0, 0, 0.03);
+      background-color: var(--bg-instructions);
       border-radius: 8px;
     }
 
@@ -73,7 +103,7 @@
     }
 
     .instructions-section a {
-      color: #1f6ac1;
+      color: var(--brand-color);
       text-decoration: none;
     }
 
@@ -93,7 +123,6 @@
       margin-top: 10px;
     }
 
-
     .commands-table-container {
       overflow-x: auto;
       margin-top: 15px;
@@ -111,16 +140,16 @@
 
     .timer-item {
       display: block;
-      border: 1px solid rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--border-color);
       border-radius: 8px;
       margin-bottom: 12px;
       padding: 12px;
-      background-color: rgba(255, 255, 255, 0.5);
+      background-color: var(--bg-card);
       transition: background-color 0.2s;
     }
 
     .timer-item:hover {
-      background-color: rgba(0, 0, 0, 0.02);
+      background-color: var(--bg-card-hover);
     }
 
     /* Fix table cell behavior for flex layout */
@@ -135,7 +164,7 @@
       font-size: 13px;
       font-weight: 600;
       margin-bottom: 8px;
-      color: #1f6ac1;
+      color: var(--brand-color);
       word-wrap: break-word;
     }
 
@@ -159,7 +188,7 @@
 
     .execution-time {
       font-size: 12px;
-      color: rgba(0, 0, 0, 0.7);
+      color: var(--text-secondary);
       white-space: nowrap;
     }
 
@@ -169,8 +198,8 @@
       border-radius: 12px;
       font-size: 11px;
       font-weight: 600;
-      background-color: rgba(31, 106, 193, 0.1);
-      color: #1f6ac1;
+      background-color: var(--brand-color-light);
+      color: var(--brand-color);
     }
 
     .timer-details .cancel-btn {
@@ -182,7 +211,7 @@
     .no-commands {
       text-align: center;
       padding: 30px;
-      color: rgba(0, 0, 0, 0.5);
+      color: var(--text-secondary);
       font-style: italic;
     }
 
@@ -190,9 +219,9 @@
       display: inline-block;
       width: 14px;
       height: 14px;
-      border: 2px solid rgba(0, 0, 0, 0.1);
+      border: 2px solid var(--border-color);
       border-radius: 50%;
-      border-top-color: #1f6ac1;
+      border-top-color: var(--brand-color);
       animation: spin 0.8s linear infinite;
     }
 
@@ -261,10 +290,10 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border: 1px solid rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--border-color);
       border-radius: 12px;
       padding: 16px;
-      background-color: rgba(255, 255, 255, 0.5);
+      background-color: var(--bg-card);
       cursor: pointer;
       transition: background-color 0.2s, transform 0.1s, border-color 0.2s;
       text-decoration: none;
@@ -272,8 +301,8 @@
     }
 
     .menu-item:hover {
-      background-color: rgba(0, 0, 0, 0.04);
-      border-color: #1f6ac1;
+      background-color: var(--bg-card-hover);
+      border-color: var(--brand-color);
     }
 
     .menu-item:active {
@@ -293,8 +322,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #1f6ac1;
-      /* Gemini AI Brand Color */
+      color: var(--brand-color);
     }
 
     .menu-item-text {
@@ -306,12 +334,12 @@
     .menu-item-title {
       font-size: 16px;
       font-weight: 600;
-      color: #333;
+      color: var(--text-primary);
     }
 
     .menu-item-subtitle {
       font-size: 13px;
-      color: #666;
+      color: var(--text-secondary);
     }
 
     .menu-item-arrow {
@@ -323,23 +351,23 @@
     /* Back Item Style */
     .back-item {
       margin-bottom: 25px;
-      border-color: rgba(0, 0, 0, 0.05);
-      background-color: #fff;
+      border-color: var(--border-light);
+      background-color: var(--bg-back-btn);
       justify-content: flex-start;
       gap: 10px;
     }
 
     .back-item .menu-item-title {
-      color: #1f6ac1;
+      color: var(--brand-color);
     }
 
     .back-item .menu-item-arrow {
-      color: #1f6ac1;
+      color: var(--brand-color);
     }
 
     .subtitle {
       font-size: 13px;
-      color: #666;
+      color: var(--text-secondary);
       line-height: 1.5;
       text-align: justify;
       white-space: pre-line;
@@ -354,6 +382,11 @@
 
     <!-- View 0: Main Menu -->
     <div id="view-menu" class="view is-active">
+      <!-- MANDATORY: Header in the initial menu view -->
+      <header class="homey-header" style="margin-bottom: 10px;">
+        <h1 class="homey-title" data-i18n="settings.menu.title"></h1>
+      </header>
+
       <form class="homey-form">
         <fieldset class="homey-form-fieldset">
           <div class="menu-list-container">
@@ -721,22 +754,28 @@
   <div id="toast" class="toast"></div>
 
   <script type="text/javascript">
-    // a method named 'onHomeyReady' must be present in your code
+    /**
+     * onHomeyReady is called when the Homey environment is loaded and ready.
+     * @public
+     * @param {Object} Homey - Homey Settings API instance
+     * @returns {void}
+     */
     function onHomeyReady(Homey) {
       // Tell Homey we're ready to be displayed
       Homey.ready();
 
       /**
-       * Show a toast notification with customizable message and type
+       * Show a toast notification with customizable message and type.
        * @private
-       * @param {string} message - The message to display in the toast
-       * @param {string} [type='success'] - The type of toast: 'success', 'error', or 'warning'
+       * @param {string} message - The message to display in the toast.
+       * @param {string} [type='success'] - The type of toast: 'success', 'error', or 'warning'.
+       * @returns {void}
        * @example
-       * showToast('Settings saved successfully', 'success');
-       * showToast('An error occurred', 'error');
-       * showToast('Please check your input', 'warning');
+       * _showToast('Settings saved successfully', 'success');
+       * _showToast('An error occurred', 'error');
+       * _showToast('Please check your input', 'warning');
        */
-      function showToast(message, type = 'success') {
+      function _showToast(message, type = 'success') {
         const toast = document.getElementById('toast');
         toast.textContent = message;
 
@@ -760,16 +799,23 @@
       const viewHistory = document.getElementById('view-history');
       const viewGuide = document.getElementById('view-guide');
 
-      function switchView(targetView) {
+      /**
+       * Switch between SPA views.
+       * @private
+       * @param {HTMLElement} targetView - The view element to activate.
+       * @returns {void}
+       */
+      function _switchView(targetView) {
         document.querySelectorAll('.view').forEach(v => v.classList.remove('is-active'));
         targetView.classList.add('is-active');
+        window.scrollTo(0, 0);
       }
 
-      document.getElementById('nav_config').addEventListener('click', () => switchView(viewSettings));
+      document.getElementById('nav_config').addEventListener('click', () => _switchView(viewSettings));
       document.getElementById('nav_custom_instructions').addEventListener('click', () => {
         customInstructionsElement.setAttribute('readonly', 'true');
-        customInstructionsElement.style.backgroundColor = 'rgba(0,0,0,0.02)';
-        switchView(viewCustomInstructions);
+        customInstructionsElement.style.backgroundColor = 'var(--bg-readonly-input)';
+        _switchView(viewCustomInstructions);
         // Trigger auto-resize AFTER view is visible (so scrollHeight is computed correctly)
         requestAnimationFrame(() => {
           [rawInput, customInstructionsElement].forEach(ta => {
@@ -779,21 +825,21 @@
         });
       });
       document.getElementById('nav_timers').addEventListener('click', () => {
-        loadScheduledCommands();
-        switchView(viewTimers);
+        _loadScheduledCommands();
+        _switchView(viewTimers);
       });
       document.getElementById('nav_history').addEventListener('click', () => {
-        loadHistoryTimeout();
-        switchView(viewHistory);
+        _loadHistoryTimeout();
+        _switchView(viewHistory);
       });
-      document.getElementById('open_guide_menu').addEventListener('click', () => switchView(viewGuide));
+      document.getElementById('open_guide_menu').addEventListener('click', () => _switchView(viewGuide));
       document.getElementById('link_to_guide').addEventListener('click', (e) => {
         e.preventDefault();
-        switchView(viewGuide);
+        _switchView(viewGuide);
       });
 
       document.querySelectorAll('.back-btn').forEach(btn => {
-        btn.addEventListener('click', () => switchView(viewMenu));
+        btn.addEventListener('click', () => _switchView(viewMenu));
       });
 
       // External Links
@@ -815,7 +861,7 @@
 
       // Load the saved API Key from Homey settings
       Homey.get("gemini_api_key", function (err, apiKey) {
-        if (err) return console.error("Error loading API Key:", err);
+        if (err) return console.error("[Settings] Error loading API Key:", err);
         if (apiKey) {
           apiKeyElement.value = apiKey;
         }
@@ -823,13 +869,13 @@
 
       // Load saved Google Search Grounding preference
       Homey.get("gemini_enable_google_search", function (err, enableGoogleSearch) {
-        if (err) return console.error("Error loading Google Search Grounding preference:", err);
+        if (err) return console.error("[Settings] Error loading Google Search Grounding preference:", err);
         enableGoogleSearchElement.checked = enableGoogleSearch !== false;
       });
 
       // Load saved Hidden & Grouped preference
       Homey.get("gemini_include_hidden_grouped", function (err, includeHiddenGrouped) {
-        if (err) return console.error("Error loading Hidden & Grouped preference:", err);
+        if (err) return console.error("[Settings] Error loading Hidden & Grouped preference:", err);
         enableHiddenGroupedElement.checked = includeHiddenGrouped === true;
       });
 
@@ -848,7 +894,7 @@
        * @private
        * @returns {void}
        */
-      function updateGoogleSearchWarning() {
+      function _updateGoogleSearchWarning() {
         var shGenericValue = modelSelectShGenericElement.value || '';
         var shFlowValue = modelSelectShFlowElement.value || '';
         var isGemini25 = shGenericValue.indexOf('gemini-2.5') !== -1 || shFlowValue.indexOf('gemini-2.5') !== -1;
@@ -862,11 +908,13 @@
        * Sets the value of a select element, falling back to a default value if the target
        * value is missing, empty, or does not match any available option in the dropdown.
        *
+       * @private
        * @param {HTMLSelectElement} selectEl - The select element to set value on.
        * @param {?string} value - The model value from settings.
        * @param {string} defaultFallback - The default fallback model value.
+       * @returns {void}
        */
-      function setSelectValueWithFallback(selectEl, value, defaultFallback) {
+      function _setSelectValueWithFallback(selectEl, value, defaultFallback) {
         if (value) {
           selectEl.value = value;
         }
@@ -882,24 +930,24 @@
        * @param {string} modelValue - The selected model identifier.
        * @returns {void}
        */
-      function checkGemini25Selection(modelValue) {
+      function _checkGemini25Selection(modelValue) {
         if (modelValue && modelValue.indexOf('gemini-2.5') !== -1) {
-          showToast(Homey.__("settings.api.warning_gemini25_apikey"), 'warning');
+          _showToast(Homey.__("settings.api.warning_gemini25_apikey"), 'warning');
         }
       }
 
       chatModelSelectElement.addEventListener('change', function () {
-        checkGemini25Selection(this.value);
+        _checkGemini25Selection(this.value);
       });
 
       modelSelectShGenericElement.addEventListener('change', function () {
-        updateGoogleSearchWarning();
-        checkGemini25Selection(this.value);
+        _updateGoogleSearchWarning();
+        _checkGemini25Selection(this.value);
       });
 
       modelSelectShFlowElement.addEventListener('change', function () {
-        updateGoogleSearchWarning();
-        checkGemini25Selection(this.value);
+        _updateGoogleSearchWarning();
+        _checkGemini25Selection(this.value);
       });
 
       /**
@@ -911,7 +959,7 @@
        * @param {Object<string, string>} i18nKeys - Mapping of model IDs to translation keys.
        * @returns {void}
        */
-      function populateModelSelect(selectEl, models, i18nKeys) {
+      function _populateModelSelect(selectEl, models, i18nKeys) {
         selectEl.innerHTML = '';
         models.forEach(function (modelId) {
           var option = document.createElement('option');
@@ -933,65 +981,63 @@
         var modelI18nKeys = (config && config.modelI18nKeys) || {};
 
         if (supportedModels.length > 0) {
-          populateModelSelect(chatModelSelectElement, supportedModels, modelI18nKeys);
-          populateModelSelect(modelSelectShGenericElement, supportedModels, modelI18nKeys);
-          populateModelSelect(modelSelectShFlowElement, supportedModels, modelI18nKeys);
+          _populateModelSelect(chatModelSelectElement, supportedModels, modelI18nKeys);
+          _populateModelSelect(modelSelectShGenericElement, supportedModels, modelI18nKeys);
+          _populateModelSelect(modelSelectShFlowElement, supportedModels, modelI18nKeys);
         }
 
         // Load the saved Generic Smart Home Model from Homey settings
         Homey.get("gemini_model_sh_generic", function (err, modelGeneric) {
-          if (err) return console.error("Error loading Generic Model:", err);
+          if (err) return console.error("[Settings] Error loading Generic Model:", err);
           if (modelGeneric) {
-            setSelectValueWithFallback(modelSelectShGenericElement, modelGeneric, defaultModels.shGeneric);
+            _setSelectValueWithFallback(modelSelectShGenericElement, modelGeneric, defaultModels.shGeneric);
           } else {
             // Fallback to old setting or default
             Homey.get("gemini_model", function (err, oldModel) {
-              setSelectValueWithFallback(modelSelectShGenericElement, oldModel, defaultModels.shGeneric);
-              updateGoogleSearchWarning();
+              _setSelectValueWithFallback(modelSelectShGenericElement, oldModel, defaultModels.shGeneric);
+              _updateGoogleSearchWarning();
             });
           }
-          updateGoogleSearchWarning();
+          _updateGoogleSearchWarning();
         });
 
         // Load the saved Flow Smart Home Model from Homey settings
         Homey.get("gemini_model_sh_flow", function (err, modelFlow) {
-          if (err) return console.error("Error loading Flow Model:", err);
+          if (err) return console.error("[Settings] Error loading Flow Model:", err);
           if (modelFlow) {
-            setSelectValueWithFallback(modelSelectShFlowElement, modelFlow, defaultModels.shFlow);
+            _setSelectValueWithFallback(modelSelectShFlowElement, modelFlow, defaultModels.shFlow);
           } else {
             // Fallback to old setting or default
             Homey.get("gemini_model", function (err, oldModel) {
-              setSelectValueWithFallback(modelSelectShFlowElement, oldModel, defaultModels.shFlow);
-              updateGoogleSearchWarning();
+              _setSelectValueWithFallback(modelSelectShFlowElement, oldModel, defaultModels.shFlow);
+              _updateGoogleSearchWarning();
             });
           }
-          updateGoogleSearchWarning();
+          _updateGoogleSearchWarning();
         });
 
         // Load the saved Chat Model from Homey settings
         Homey.get("gemini_model_chat", function (err, chatModel) {
-          if (err) return console.error("Error loading Gemini Chat Model:", err);
-          setSelectValueWithFallback(chatModelSelectElement, chatModel, defaultModels.chat);
+          if (err) return console.error("[Settings] Error loading Gemini Chat Model:", err);
+          _setSelectValueWithFallback(chatModelSelectElement, chatModel, defaultModels.chat);
         });
       });
 
       // Load saved Custom Instructions
       Homey.get("gemini_custom_instructions", function (err, instructions) {
-        if (err) return console.error("Error loading Custom Instructions:", err);
+        if (err) return console.error("[Settings] Error loading Custom Instructions:", err);
         if (instructions) {
           customInstructionsElement.value = instructions;
-          // Deferred resize happens when user opens the view
         }
       });
 
       // Load saved Custom Instructions (Raw)
       Homey.get("gemini_custom_instructions_raw", function (err, rawInstructions) {
-        if (err) return console.error("Error loading raw instructions:", err);
+        if (err) return console.error("[Settings] Error loading raw instructions:", err);
         if (rawInstructions) {
           const rawInput = document.getElementById("rawInstructions");
           if (rawInput) {
             rawInput.value = rawInstructions;
-            // Deferred resize happens when user opens the view
           }
         }
       });
@@ -1000,7 +1046,7 @@
 
       // Load the saved Image Pool Size from Homey settings
       Homey.get("gemini_image_pool_size", function (err, poolSize) {
-        if (err) return console.error("Error loading Image Pool Size:", err);
+        if (err) return console.error("[Settings] Error loading Image Pool Size:", err);
         if (poolSize !== undefined && poolSize !== null) {
           imagePoolSizeElement.value = poolSize;
         } else {
@@ -1021,7 +1067,7 @@
         // Save the API Key to Homey settings
         Homey.set("gemini_api_key", apiKey, function (err) {
           if (err) {
-            showToast(Homey.__("settings.common.error_generic") + ": " + err, 'error');
+            _showToast(Homey.__("settings.common.error_generic") + ": " + err, 'error');
             return;
           }
 
@@ -1030,7 +1076,7 @@
 
           Homey.set("gemini_model_sh_generic", modelShGeneric, function (err) {
             if (err) {
-              showToast(Homey.__("settings.common.error_generic") + ": " + err, 'error');
+              _showToast(Homey.__("settings.common.error_generic") + ": " + err, 'error');
               return;
             }
 
@@ -1039,48 +1085,49 @@
 
             Homey.set("gemini_model_sh_flow", modelShFlow, function (err) {
               if (err) {
-                showToast(Homey.__("settings.common.error_generic") + ": " + err, 'error');
+                _showToast(Homey.__("settings.common.error_generic") + ": " + err, 'error');
                 return;
               }
 
-            // Save the Chat Model
-            var chatModel = chatModelSelectElement.value;
-            Homey.set("gemini_model_chat", chatModel, function (err) {
-              if (err) {
-                showToast(Homey.__("settings.common.error_generic") + ": " + err, 'error');
-                return;
-              }
-
-              // Save the Image Pool Size
-              var poolSize = parseInt(imagePoolSizeElement.value, 10);
-              if (isNaN(poolSize) || poolSize < 1) {
-                showToast(Homey.__("settings.common.error_pool_size"), 'error');
-                return;
-              }
-
-              Homey.set("gemini_image_pool_size", poolSize, function (err) {
+              // Save the Chat Model
+              var chatModel = chatModelSelectElement.value;
+              Homey.set("gemini_model_chat", chatModel, function (err) {
                 if (err) {
-                  showToast(Homey.__("settings.common.error_generic") + ": " + err, 'error');
+                  _showToast(Homey.__("settings.common.error_generic") + ": " + err, 'error');
                   return;
                 }
 
-                // Save Hidden & Grouped preference
-                var includeHiddenGrouped = enableHiddenGroupedElement.checked;
-                Homey.set("gemini_include_hidden_grouped", includeHiddenGrouped, function (err) {
+                // Save the Image Pool Size
+                var poolSize = parseInt(imagePoolSizeElement.value, 10);
+                if (isNaN(poolSize) || poolSize < 1) {
+                  _showToast(Homey.__("settings.common.error_pool_size"), 'error');
+                  return;
+                }
+
+                Homey.set("gemini_image_pool_size", poolSize, function (err) {
                   if (err) {
-                    showToast(Homey.__("settings.common.error_generic") + ": " + err, 'error');
+                    _showToast(Homey.__("settings.common.error_generic") + ": " + err, 'error');
                     return;
                   }
 
-                  // Save Google Search Grounding preference
-                  var enableGoogleSearch = enableGoogleSearchElement.checked;
-                  Homey.set("gemini_enable_google_search", enableGoogleSearch, function (err) {
+                  // Save Hidden & Grouped preference
+                  var includeHiddenGrouped = enableHiddenGroupedElement.checked;
+                  Homey.set("gemini_include_hidden_grouped", includeHiddenGrouped, function (err) {
                     if (err) {
-                      showToast(Homey.__("settings.common.error_generic") + ": " + err, 'error');
+                      _showToast(Homey.__("settings.common.error_generic") + ": " + err, 'error');
                       return;
                     }
 
-                    showToast(Homey.__("settings.common.saved"), 'success');
+                    // Save Google Search Grounding preference
+                    var enableGoogleSearch = enableGoogleSearchElement.checked;
+                    Homey.set("gemini_enable_google_search", enableGoogleSearch, function (err) {
+                      if (err) {
+                        _showToast(Homey.__("settings.common.error_generic") + ": " + err, 'error');
+                        return;
+                      }
+
+                      _showToast(Homey.__("settings.common.saved"), 'success');
+                    });
                   });
                 });
               });
@@ -1088,20 +1135,24 @@
           });
         });
       });
-    });
 
       // UI Elements for Custom Instructions
       const generatePromptBtn = document.getElementById("generatePromptBtn");
       const editPromptBtn = document.getElementById("editPromptBtn");
       const rawInput = document.getElementById("rawInstructions");
 
-      // Auto-resize logic (hidden scrollbars)
-      function autoResizeTextarea() {
+      /**
+       * Auto-resizes a textarea based on its scrollHeight.
+       * @private
+       * @this {HTMLTextAreaElement}
+       * @returns {void}
+       */
+      function _autoResizeTextarea() {
         this.style.height = 'auto';
         this.style.height = (this.scrollHeight) + 'px';
       }
-      rawInput.addEventListener('input', autoResizeTextarea);
-      customInstructionsElement.addEventListener('input', autoResizeTextarea);
+      rawInput.addEventListener('input', _autoResizeTextarea);
+      customInstructionsElement.addEventListener('input', _autoResizeTextarea);
 
       // Generate Prompt via API
       generatePromptBtn.addEventListener("click", function (e) {
@@ -1109,7 +1160,7 @@
         var rawText = rawInput.value.trim();
 
         if (!rawText) {
-          showToast(Homey.__("settings.custom_instructions.error_empty"), 'warning');
+          _showToast(Homey.__("settings.custom_instructions.error_empty"), 'warning');
           return;
         }
 
@@ -1128,18 +1179,18 @@
           spinner.style.display = 'none';
 
           if (err) {
-            console.error('[generateCustomPrompt] err:', err);
-            showToast(err.message || err.toString(), 'error');
+            console.error('[Settings:generateCustomPrompt] err:', err);
+            _showToast(err.message || err.toString(), 'error');
             return;
           }
           if (result && result.success && result.generatedPrompt) {
             customInstructionsElement.value = result.generatedPrompt;
             customInstructionsElement.style.height = 'auto';
             customInstructionsElement.style.height = (customInstructionsElement.scrollHeight) + 'px';
-            showToast(Homey.__("settings.custom_instructions.msg_generated"), 'success');
+            _showToast(Homey.__("settings.custom_instructions.msg_generated"), 'success');
           } else {
-            console.error('[generateCustomPrompt] error result:', result);
-            showToast(result?.error || Homey.__("settings.common.unknown_error"), 'error');
+            console.error('[Settings:generateCustomPrompt] error result:', result);
+            _showToast(result?.error || Homey.__("settings.common.unknown_error"), 'error');
           }
         });
       });
@@ -1148,9 +1199,9 @@
       editPromptBtn.addEventListener("click", function (e) {
         e.preventDefault();
         customInstructionsElement.removeAttribute('readonly');
-        customInstructionsElement.style.backgroundColor = ''; // Remove the gray background
+        customInstructionsElement.style.backgroundColor = '';
         customInstructionsElement.focus();
-        showToast(Homey.__("settings.custom_instructions.msg_edit_mode"), "warning");
+        _showToast(Homey.__("settings.custom_instructions.msg_edit_mode"), "warning");
       });
 
       // Save Custom Instructions
@@ -1159,13 +1210,13 @@
         var customInstructions = customInstructionsElement.value.trim();
 
         if (!customInstructions) {
-          showToast(Homey.__("settings.custom_instructions.error_empty_save"), 'warning');
+          _showToast(Homey.__("settings.custom_instructions.error_empty_save"), 'warning');
           return;
         }
 
         Homey.set("gemini_custom_instructions", customInstructions, function (err) {
           if (err) {
-            showToast(Homey.__("settings.common.error_generic") + ": " + err, 'error');
+            _showToast(Homey.__("settings.common.error_generic") + ": " + err, 'error');
             return;
           }
 
@@ -1173,16 +1224,36 @@
           var rawText = rawInput.value.trim();
           Homey.set("gemini_custom_instructions_raw", rawText, function (err) {
             if (err) {
-              console.error('[save] Error saving raw instructions:', err);
-              // We don't block the UI here since the main prompt is saved
+              console.error('[Settings:save] Error saving raw instructions:', err);
             }
-            showToast(Homey.__("settings.custom_instructions.msg_saved"), 'success');
+            _showToast(Homey.__("settings.custom_instructions.msg_saved"), 'success');
           });
         });
       });
 
-      // Load scheduled commands
-      function loadScheduledCommands() {
+      /**
+       * Escape HTML special characters to prevent XSS.
+       * @private
+       * @param {string} text - Raw string to escape.
+       * @returns {string} Escaped HTML-safe string.
+       */
+      function _escapeHtml(text) {
+        var map = {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#039;'
+        };
+        return String(text).replace(/[&<>"']/g, function (m) { return map[m]; });
+      }
+
+      /**
+       * Load scheduled commands from backend and render the table.
+       * @private
+       * @returns {void}
+       */
+      function _loadScheduledCommands() {
         commandsContainer.innerHTML = '<div style="text-align: center; padding: 20px;"><div class="loading-spinner"></div></div>';
 
         Homey.api("GET", "/scheduled-commands", null, function (err, result) {
@@ -1203,14 +1274,14 @@
             table += '<tr class="timer-item">';
             table += '<td>';
             // First row: Command
-            table += '<div class="timer-command">' + escapeHtml(cmd.description || cmd.command) + '</div>';
+            table += '<div class="timer-command">' + _escapeHtml(cmd.description || cmd.command) + '</div>';
             // Second row: Details (time, status, button)
             table += '<div class="timer-details">';
             table += '<div class="timer-details-left">';
-            table += '<span class="execution-time">⏰ ' + escapeHtml(cmd.executeAtLocal) + '</span>';
-            table += '<span class="status-badge">' + escapeHtml(cmd.status) + '</span>';
+            table += '<span class="execution-time">⏰ ' + _escapeHtml(cmd.executeAtLocal) + '</span>';
+            table += '<span class="status-badge">' + _escapeHtml(cmd.status) + '</span>';
             table += '</div>';
-            table += '<button type="button" class="homey-button-danger-shadow homey-button-small cancel-btn" data-schedule-id="' + escapeHtml(cmd.scheduleId) + '">' + Homey.__("settings.scheduled_commands.btn_cancel") + '</button>';
+            table += '<button type="button" class="homey-button-danger-shadow homey-button-small cancel-btn" data-schedule-id="' + _escapeHtml(cmd.scheduleId) + '">' + Homey.__("settings.scheduled_commands.btn_cancel") + '</button>';
             table += '</div>';
             table += '</td>';
             table += '</tr>';
@@ -1221,71 +1292,52 @@
 
           // Add event listeners to cancel buttons
           var cancelButtons = commandsContainer.querySelectorAll('.cancel-btn');
-          console.log('[loadScheduledCommands] Found', cancelButtons.length, 'cancel buttons');
 
           cancelButtons.forEach(function (btn) {
             btn.addEventListener('click', function (e) {
               e.preventDefault();
               var scheduleId = this.getAttribute('data-schedule-id');
-              console.log('[Cancel button] Clicked, scheduleId:', scheduleId);
-              cancelScheduledCommand(scheduleId);
+              _cancelScheduledCommand(scheduleId);
             });
           });
         });
       }
 
-      // Cancel scheduled command
-      function cancelScheduledCommand(scheduleId) {
-        console.log('[cancelScheduledCommand] Button clicked, scheduleId:', scheduleId);
-        console.log('[cancelScheduledCommand] Calling Homey.confirm...');
-
+      /**
+       * Prompts confirmation and cancels a scheduled command by its ID.
+       * @private
+       * @param {string} scheduleId - Identifier of the schedule to cancel.
+       * @returns {void}
+       */
+      function _cancelScheduledCommand(scheduleId) {
         Homey.confirm(Homey.__("settings.scheduled_commands.confirm_cancel"), 'warning', function (err, result) {
-          console.log('[cancelScheduledCommand] Homey.confirm callback called - err:', err, 'result:', result);
-
           if (err) {
-            console.error('[cancelScheduledCommand] Error showing confirm dialog:', err);
+            console.error('[Settings:cancelScheduledCommand] Error showing confirm dialog:', err);
             return;
           }
 
           if (!result) {
-            console.log('[cancelScheduledCommand] User cancelled the confirmation dialog');
             return;
           }
 
-          console.log('[cancelScheduledCommand] User confirmed, proceeding with API call');
-
           Homey.api("DELETE", "/scheduled-commands/" + scheduleId, null, function (err, result) {
-            console.log('[cancelScheduledCommand] API response - err:', err, 'result:', result);
-
             if (err) {
-              console.error('[cancelScheduledCommand] API error:', err);
+              console.error('[Settings:cancelScheduledCommand] API error:', err);
               Homey.alert(Homey.__("settings.scheduled_commands.error_cancel") + ': ' + err);
               return;
             }
 
             if (result.success) {
-              console.log('[cancelScheduledCommand] Command cancelled successfully');
-              showToast(Homey.__("settings.scheduled_commands.msg_cancelled"), 'success');
-              loadScheduledCommands(); // Reload list
+              _showToast(Homey.__("settings.scheduled_commands.msg_cancelled"), 'success');
+              _loadScheduledCommands();
             } else {
-              console.error('[cancelScheduledCommand] Cancellation failed:', result.error);
-              showToast(Homey.__("settings.scheduled_commands.error_cancel") + ': ' + (result.error || Homey.__("settings.common.unknown_error")), 'error');
+              console.error('[Settings:cancelScheduledCommand] Cancellation failed:', result.error);
+              _showToast(Homey.__("settings.scheduled_commands.error_cancel") + ': ' + (result.error || Homey.__("settings.common.unknown_error")), 'error');
             }
           });
         });
       }
 
-      // Escape HTML to prevent XSS
-      function escapeHtml(text) {
-        var map = {
-          '&': '&amp;',
-          '<': '&lt;',
-          '>': '&gt;',
-          '"': '&quot;',
-          "'": '&#039;'
-        };
-        return String(text).replace(/[&<>"']/g, function (m) { return map[m]; });
-      }
       // Clear conversation history button
       var clearHistoryElement = document.getElementById("clearHistory");
       clearHistoryElement.addEventListener("click", function (e) {
@@ -1295,10 +1347,10 @@
 
           Homey.api("DELETE", "/conversation-history", null, function (err, result) {
             if (err || !result.success) {
-              showToast(Homey.__("settings.history.error_clear") + (err ? ': ' + err : ''), 'error');
+              _showToast(Homey.__("settings.history.error_clear") + (err ? ': ' + err : ''), 'error');
               return;
             }
-            showToast(Homey.__("settings.history.msg_cleared"), 'success');
+            _showToast(Homey.__("settings.history.msg_cleared"), 'success');
           });
         });
       });
@@ -1306,9 +1358,14 @@
       // Load history timeout setting
       var historyTimeoutElement = document.getElementById("historyTimeout");
 
-      function loadHistoryTimeout() {
+      /**
+       * Loads the conversation history idle timeout from Homey settings.
+       * @private
+       * @returns {void}
+       */
+      function _loadHistoryTimeout() {
         Homey.get("conversation_history_timeout", function (err, value) {
-          if (err) return console.error("Error loading history timeout:", err);
+          if (err) return console.error("[Settings] Error loading history timeout:", err);
           historyTimeoutElement.value = (value && !isNaN(value)) ? Number(value) : 30;
         });
       }
@@ -1318,15 +1375,15 @@
         e.preventDefault();
         var raw = parseInt(historyTimeoutElement.value, 10);
         if (isNaN(raw) || raw < 10 || raw > 240) {
-          showToast(Homey.__("settings.history.error_invalid_timeout"), 'warning');
+          _showToast(Homey.__("settings.history.error_invalid_timeout"), 'warning');
           return;
         }
         Homey.set("conversation_history_timeout", raw, function (err) {
           if (err) {
-            showToast(Homey.__("settings.history.error_timeout") + ': ' + err, 'error');
+            _showToast(Homey.__("settings.history.error_timeout") + ': ' + err, 'error');
             return;
           }
-          showToast(Homey.__("settings.history.msg_timeout_saved"), 'success');
+          _showToast(Homey.__("settings.history.msg_timeout_saved"), 'success');
         });
       });
 

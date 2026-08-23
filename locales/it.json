@@ -11,7 +11,7 @@
             "unknown_error": "Errore sconosciuto"
         },
         "menu": {
-            "title": "Gemini AI",
+            "title": "Impostazioni Gemini AI",
             "subtitle": "Impostazioni di Gemini AI",
             "api_title": "Configurazione",
             "api_desc": "Configura API e modelli",

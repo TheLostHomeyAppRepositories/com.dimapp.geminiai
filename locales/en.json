@@ -11,7 +11,7 @@
             "unknown_error": "Unknown error"
         },
         "menu": {
-            "title": "Gemini AI",
+            "title": "Gemini AI Settings",
             "subtitle": "Gemini AI Settings",
             "api_title": "Configuration",
             "api_desc": "Configure API and models",
@@ -19,7 +19,7 @@
             "custom_instructions_desc": "Improve responses with custom rules",
             "timers_title": "Scheduled Commands",
             "timers_desc": "Manage scheduled commands",
-            "history_title": "History Configuration",
+            "history_title": "Conversation History",
             "history_desc": "Manage chat history",
             "guide_title": "Setup Guide",
             "guide_desc": "Instructions to configure the app"
