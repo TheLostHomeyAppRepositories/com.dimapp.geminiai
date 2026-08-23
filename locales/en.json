@@ -45,7 +45,8 @@
                 "pro3_preview": "Gemini 3.1 Pro Preview",
                 "flash35_lite": "Gemini 3.5 Flash-Lite",
                 "flash35": "Gemini 3.5 Flash",
-                "flash36": "Gemini 3.6 Flash"
+                "flash36": "Gemini 3.6 Flash",
+                "flash37": "Gemini 3.7 Flash"
             },
             "pool_size_label": "Simultaneous Images",
             "pool_size_help": "Number of images pre-allocated for simultaneous 'Send Prompt with Image' queries. A high number consumes a lot of memory with risk of app crash. Each change requires the app to be restarted to take effect.",
@@ -58,6 +59,7 @@
             "enable_google_search_checkbox_text": "Enable real-time searches",
             "enable_google_search_help": "Allow Gemini to search the web in real-time to answer general questions (e.g. weather, news).",
             "enable_google_search_warning_gemini25": "Warning: one or more Smart Home models selected is from the Gemini 2.5 family. These models do not support Google Search combined with Smart Home commands. Google Search will be automatically disabled for Smart Home requests only.",
+            "warning_gemini25_apikey": "Warning: Gemini 2.5 models are being phased out and may not be available on recently created API keys.",
             "include_hidden_grouped_label": "Hidden & Grouped Devices",
             "include_hidden_grouped_checkbox_text": "Include hidden devices and group members",
             "include_hidden_grouped_help": "Allows Gemini to see and control devices marked as hidden or that are part of a virtual group (disabled by default)."
@@ -136,7 +138,9 @@
             "no_device_image": "No image available for this device",
             "image_too_large": "Image too large (max 5MB)",
             "fetch_image_failed": "Failed to fetch device image",
-            "not_answerable": "Gemini cannot evaluate this condition: __explanation__"
+            "not_answerable": "Gemini cannot evaluate this condition: __explanation__",
+            "model_not_available": "The selected Gemini model is no longer available or supported for your API key. Please select a different model in the app settings (e.g. Gemini 3.5 Flash Lite or Gemini 3.1 Flash Lite).",
+            "network_error": "Unable to connect to Google Gemini servers. Please check your internet connection and try again."
         },
         "firmware": {
             "zigbee_verified": "Zigbee firmware verified.",

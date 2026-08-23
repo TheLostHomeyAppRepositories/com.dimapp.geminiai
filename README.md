@@ -1,182 +1,181 @@
-# Gemini AI
+# Gemini AI for Homey Pro
 
-**Chat directly with Gemini AI using the Homey Dashboard Widget, or integrate it into your Flows as a powerful smart home assistant.**
+**Chat directly with Gemini AI using the Homey Dashboard Widget, or integrate it into your Flows as an advanced, autonomous smart home assistant.**
 
-This Homey app bridges the gap between your smart home and advanced artificial intelligence, allowing you to interact with your home using natural language. Use the Dashboard Widget to chat directly with Gemini to ask about your home's status, control devices without rigid commands, or naturally schedule tasks. Additionally, integrate Gemini into your existing Flows to analyze images, process text, or generate intelligent responses.
-
-## Features
-
-- **Dashboard Chat Widget**: Chat directly with Gemini AI from your Homey interface to control devices, query status, or schedule tasks naturally.
-- **Smart Home Assistant**: Gemini acts as an intelligent assistant within your existing Flows. It can control devices, query the state of your home, and trigger your existing automations.
-- **Standard & Advanced Flow Management**: Design, create, connect, or delete both Standard and Advanced Homey automation flows using natural language, with a built-in safety confirmation step and automatic visual graph auto-layout.
-- **Text Prompts**: "Send a prompt" action card that accepts text and returns AI-generated responses for custom automations.
-- **Image Analysis**: "Send a prompt with image" action card for multimodal prompts (image + text). Perfect for security camera analysis.
-- **Condition Cards**: "Ask Gemini" (text), "Ask Gemini with Image" (multimodal), and "Ask Gemini using Smart Home" (MCP) condition cards that evaluate yes/no questions to dynamically route Flow execution.
-- **Custom Instructions**: Define specific rules or context that Gemini must always follow when interpreting smart home commands.
-- **Conversation Context**: "Set conversation context" action card to inject context for follow-up commands across flows.
-- **Scheduled Automations**: Schedule commands to run in the future (e.g., "Turn off the lights in 10 minutes").
-- **Retry Logic**: Intelligent quota limit handling (429 errors) with automatic retries.
-- **Model Selection**: Choose between Gemini models (Flash, Pro, Gemini 3) in settings to balance speed and performance.
-- **Token Support**: Returns various tokens (answer, success, timer ID) usable in subsequent Flow cards.
-- **Image Integration**: Full support for Homey image tokens (e.g., webcam snapshots).
-
-## Requirements
-
-- Homey Pro with firmware >=12.4.0
-- Google Gemini API Key (free plan available)
-- **HomeyScript**: Required for triggering Flows and executing advanced actions on devices.
-
-## Installation
-
-### From Homey App Store
-1. Open the Homey app on your device
-2. Go to "More" → "Apps"
-3. Search for "Gemini for Homey"
-4. Install the app
-
-### For Development
-1. Clone this repository
-2. Install dependencies: `npm install`
-3. Use the preconfigured scripts to build and run the app:
-   - Build & run in debug mode (with `--r` automatic flag): `npm run debug`
-   - Build & install: `npm run install`
-
-## Google Gemini API Key Configuration
-
-### Step 1: Access Google AI Studio
-1. Go to [Google AI Studio](https://aistudio.google.com/)
-2. Log in with your Google account
-
-### Step 2: Create an API Key
-1. Click on "Get API Key" in the sidebar
-2. Click "Create API key in new project"
-3. Your key will be generated automatically
-
-### Pricing Information
-- Google Gemini API offers a generous free plan (up to 15 requests per minute).
-- For up-to-date details, visit [Google AI Pricing](https://ai.google.dev/pricing).
-
-## App Configuration
-
-1. Open Homey App → "More" → "Apps" → "Gemini for Homey" → "Settings".
-2. Enter your API Key.
-3. Select your preferred Gemini Model.
-4. Click "Save".
-
-## Usage Examples
-
-### Direct Chat via Dashboard Widget
-Simply add the Gemini Chat widget to your Homey dashboard to instantly ask questions like "Did I leave any windows open?" or give commands like "Start the vacuum cleaner when I leave."
-
-
-### Conversational Device Control
-```
-WHEN: Voice command received
-THEN: Run a command for your smart home "Turn off all lights in the living room"
-AND: Speak the response
-```
-
-### Image Analysis with Webcam
-```
-WHEN: Doorbell detects motion
-THEN: Send a prompt with image "Describe what you see in this image and identify people or packages"
-AND: Send notification with Gemini's analysis
-```
-
-### Smart Home Query
-```
-WHEN: Schedule triggered
-THEN: Run a command for your smart home "Which lights are on in the kitchen?"
-AND: Log the response
-```
-
-### Conditional Automation (e.g. Turn off TV if no kids are watching)
-```
-WHEN: Motion stopped in the living room
-AND: Ask Gemini "Is anyone still watching the TV?" using Smart Home
-  [Inverted (Not)]
-THEN: Turn off the TV
-```
-
-### Contextual Follow-up
-```
-WHEN: Motion detected at front door
-THEN: Set conversation context "Do you want me to turn on the entrance light?"
-AND: Wait for voice command
-
-WHEN: Voice command received ("yes, turn it on")
-THEN: Run a command for your smart home with the voice text
-```
-
-## Technical Details
-
-### Main Dependencies
-- `@google/genai`: Official Google Generative AI SDK (v1.46.0+)
-- `homey-api`: Homey API Client (v3.17.3+)
-- `homey`: Homey Apps SDK v3
-
-### Flow Cards (Actions)
-
-#### Send a prompt (Text Only)
-- **Input**: Text prompt
-- **Output**: `answer` token with Gemini's response
-
-#### Send a prompt with image (Multimodal)
-- **Input**: Image token + Text prompt
-- **Output**: `answer` token with Gemini's response
-
-#### Run a command for your smart home (Function Calling)
-This action uses the Model Context Protocol (MCP) to interact with Homey. Gemini autonomously decides which tools to use from the 16 available:
-
-**Main Tools:**
-- `control_device`: Controls any device (on/off, brightness, temperature, etc.).
-- `trigger_flow`: Triggers a Homey Flow by name.
-- `get_device_state`: Queries the current state of a device.
-- `list_devices_in_zone`: Lists devices in a specific zone/room.
-- `get_devices_status_by_class`: Status of all devices of a class (e.g., "which lights are on?").
-- `search_devices`: Advanced (fuzzy) search for devices by keywords.
-- `schedule_command`: Schedules future command execution.
-- `list_flows` / `discover_flow_details`: Discovery and details of existing automations (works for both standard and advanced flows).
-- `manage_flow`: Dynamic creation, modification, and deletion of Standard automation flows.
-- `manage_advanced_flow`: Dynamic design, creation, logical connection, and deletion of Advanced automation flows (with support for sequential branches, delay/timing cards, logical ALL/ANY cards, and automatic spatial auto-layout).
-- `list_device_actions` / `run_action_card`: Execution of specific (Action Cards) non-standard actions.
-
-**Technical Notes:**
-- Requires `homey:manager:api` permission.
-- Works only on local Homey installations (not Homey Cloud).
-
-### Flow Cards (Conditions)
-
-#### Ask Gemini a yes/no question (Text Only)
-- **Input**: Yes/no text question
-- **Output**: Boolean flow execution (passes on YES, stops on NO or throws a descriptive error if unanswerable)
-
-#### Ask Gemini a yes/no question about an image (Multimodal)
-- **Input**: Image token + Yes/no text question
-- **Output**: Boolean flow execution (passes on YES, stops on NO or throws a descriptive error if unanswerable)
-
-#### Ask Gemini a smart home yes/no question (MCP)
-- **Input**: Yes/no smart home text question
-- **Output**: Boolean flow execution (passes on YES, stops on NO or throws a descriptive error if unanswerable). Integrates with the persistent conversation history for contextual follow-ups.
-
-## Privacy and Security
-
-- **API Key Storage**: Securely stored in Homey settings.
-- **Data Processing**: Prompts, images, and responses are processed by Google Gemini APIs.
-- **No Local Retention**: The app does not store prompts or generated analyses.
-
-## Troubleshooting
-
-**"HomeyScript app is NOT installed"**
-- Install the HomeyScript app from the official store to enable Flow triggering and device actions.
-
-**"Quota exceeded" (429)**
-- Gemini Client implements an automatic retry system, but if the error persists, check your plan limits on Google AI Studio.
-
-## Support
-- **Issues**: [GitHub Issues](https://github.com/s-dimaio/com.dimapp.geminiai/issues)
-- **Documentation**: [Gemini API Docs](https://ai.google.dev/gemini-api/docs)
+This Homey app bridges your smart home with Google's Generative AI models (`@google/genai`), allowing you to interact with your home using natural language. Use the Dashboard Widget to chat with Gemini, query device states, control capabilities, or schedule future actions. Additionally, integrate Gemini into your Flows to evaluate complex yes/no conditions, analyze camera snapshots, manage Standard and Advanced Flows, or automate device routines.
 
 ---
-**Author**: Simone Di Maio
-**License**: GNU General Public License v3.0
+
+## 🌟 Key Features
+
+- **Dashboard Chat Widget**: Interactive chat widget on your Homey dashboard to control devices, query real-time states, and execute automations. Built with an asynchronous polling queue to prevent UI timeouts.
+- **Smart Home Assistant (MCP Engine)**: Autonomous function calling powered by the Model Context Protocol (MCP). Gemini discovers resources, queries device status, and executes actions across your smart home.
+- **Multi-Role Model Routing**: Dedicated model assignment for each operational role:
+  - **Conversational AI (`chat`)**: Fast, lightweight models (e.g. `gemini-3.1-flash-lite`, `gemini-3.5-flash-lite`) for general questions, condition cards, and vision analysis.
+  - **Basic Smart Home (`shGeneric`)**: High-efficiency model for querying and controlling smart home devices.
+  - **Automation & Flows (`shFlow`)**: Advanced reasoning model (e.g. `gemini-3.7-flash`) specialized in designing, creating, and modifying Homey Standard and Advanced Flows.
+  - **Image Generation (`image`)**: Model dedicated to generating images (`gemini-3.1-flash-image`).
+- **Context Caching**: Static system instructions and MCP tool schemas (~19,500 tokens) are cached in Google GenAI memory, reducing prompt token costs by up to 88% and providing ultra-fast response times.
+- **Standard & Advanced Flow Management**: Natural language creation, modification, connection, deletion, and rollback restoration of both Standard and visual DAG Advanced Flows, complete with automatic spatial auto-layout computation.
+- **Intelligent Condition Cards**: Three boolean condition cards (`Ask Gemini`, `Ask Gemini with Image`, `Ask Gemini using Smart Home`) to dynamically branch Flows based on real-world reasoning.
+- **Sensor History & Device Logs**: Query past sensor trends, averages, and historical time-series data (temperature, energy consumption, etc.).
+- **Matter OTA Firmware Management**: Check firmware availability for all devices and trigger over-the-air updates for Matter devices.
+- **Multi-Turn Memory & Pruning**: Remembers conversational context across interactions with automatic idle timeout cleanup and uncached token management.
+- **Scheduled Automations**: Schedule commands with natural language (e.g., *"Turn off living room lights at 11 PM"* or *"in 15 minutes"*), persisted across app restarts.
+- **Custom Instructions & AI Prompt Generator**: Write natural rules (e.g., *"Always check the bedroom Daikin when I ask for temperature"*) and convert them automatically into formatted Markdown system prompts.
+- **Hidden & Grouped Devices Control**: Configurable access to devices marked as hidden or grouped in Homey.
+
+---
+
+## 📋 Requirements
+
+- **Homey Pro** with firmware `>= 12.4.0` (Homey Apps SDK v3).
+- **Google Gemini API Key**: Obtainable from [Google AI Studio](https://aistudio.google.com/). A Pay-As-You-Go plan is recommended to unlock Context Caching and high token-per-minute (TPM) limits.
+- **HomeyScript App**: Required to grant flow-triggering permissions (`homey.flow.start`) on Homey Pro.
+
+---
+
+## 🚀 Installation & Local Setup
+
+### From Homey App Store
+1. Open the Homey app on your phone or web browser.
+2. Navigate to **More** → **Apps**.
+3. Search for **Gemini AI** and install it.
+
+### Development & Local Build
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/s-dimaio/com.dimapp.geminiai.git
+   cd com.dimapp.geminiai
+   ```
+2. Install development dependencies:
+   ```bash
+   npm install
+   ```
+3. Use the build and debug scripts:
+   - **Build production bundle**: `npm run build` (uses `@vercel/ncc` to compile `app.src.js` $\rightarrow$ `dist/index.js`)
+   - **Run in debug mode**: `npm run debug` (builds and runs with live logs)
+   - **Install on target Homey**: `npm run install`
+   - **Publish update**: `npm run publish`
+
+---
+
+## 🔑 Google Gemini API Key Configuration
+
+### 1. Get an API Key
+1. Visit [Google AI Studio](https://aistudio.google.com/).
+2. Sign in with your Google account.
+3. Click **Get API Key** in the sidebar and create a key in a Google Cloud project.
+4. *(Recommended)* Under **Plan & Billing**, link a billing account to activate Pay-As-You-Go for Context Caching and high rate limits.
+
+### 2. Configure Homey Settings
+1. In Homey, go to **More** → **Apps** → **Gemini AI** → **Settings**.
+2. Paste your **API Key**.
+3. Choose your preferred models for **Conversational AI**, **Smart Home Management**, and **Automation Management**.
+4. *(Optional)* Add Custom Instructions or toggle Google Search Grounding / Hidden Devices.
+5. Click **Save**.
+
+---
+
+## 💡 Flow Cards Reference
+
+### 🎬 Action Cards
+
+1. **Send a prompt (`send-prompt`)**
+   - *Description*: Sends a plain text prompt to the Conversational AI model.
+   - *Tokens returned*: `answer` (AI response text).
+2. **Send a prompt with image (`send-prompt-with-image`)**
+   - *Description*: Multimodal analysis combining an image token (camera snapshot/webcam) with a text prompt.
+   - *Tokens returned*: `answer` (analysis text), `analyzed_image` (captured image buffer).
+3. **Execute Smart Home MCP Command (`send-mcp-command`)**
+   - *Description*: Executes natural language smart home commands using MCP function calling.
+   - *Tokens returned*: `response` (text answer), `success` (boolean), `timer_id` (schedule ID if a timer was set).
+4. **Seed Conversation Context (`seed-conversation-context`)**
+   - *Description*: Pre-injects a contextual message into Gemini's multi-turn conversation memory before a subsequent MCP command runs.
+
+### ❓ Condition Cards
+
+1. **Evaluate Prompt (`evaluate-prompt`)**
+   - *Description*: Evaluates a yes/no question using general AI reasoning. Returns `true` if Gemini answers YES.
+2. **Evaluate Prompt with Image (`evaluate-prompt-with-image`)**
+   - *Description*: Evaluates a yes/no question about an image token (e.g., *"Is there a package on the porch?"*).
+3. **Evaluate Smart Home Command (`evaluate-mcp-command`)**
+   - *Description*: Evaluates a yes/no question by querying real-time smart home device states (e.g., *"Is any light on in the garden?"*).
+
+### ⚡ Trigger Cards
+
+1. **Gemini Response Ready (`gemini_response_ready`)**
+   - *Description*: Triggers asynchronously when a text prompt finishes processing.
+   - *Tokens*: `response` (text).
+2. **Gemini Image Response Ready (`gemini_image_response_ready`)**
+   - *Description*: Triggers asynchronously when an image prompt finishes processing.
+   - *Tokens*: `response` (text), `image` (Homey Image).
+3. **Scheduled Command Executed (`scheduled_command_executed`)**
+   - *Description*: Triggers when a scheduled command timer is executed by the scheduler.
+   - *Tokens*: `timer_id`, `command`, `success`, `response`.
+
+---
+
+## 🛠️ MCP Tools & Capabilities (Smart Home Engine)
+
+When executing smart home requests, Gemini autonomously selects from 15 canonical tools:
+
+| MCP Tool | Description |
+| :--- | :--- |
+| `control_device` | Changes device capabilities (`onoff`, `dim`, `target_temperature`, `volume_set`, `windowcoverings_state`, etc.). |
+| `get_device_state` | Queries real-time device capability values and availability status with error reason extraction. |
+| `discover_resources` | Discovers devices, user-installed apps, or system managers with query, zone, and class filtering. |
+| `get_home_summary` | Summary of device counts, status by class/zone (e.g. lights on, doors locked), and offline device list. |
+| `manage_schedule` | Creates, lists, or cancels future command timers (`create`, `list`, `cancel`). |
+| `discover_flows` | Discovers and filters existing Standard and Advanced Flows by name, folder, type, or state. |
+| `discover_flow_details` | Inspects the internal node structure, triggers, conditions, and action arguments of a Flow. |
+| `manage_flow` | Creates, updates, deletes, or restores Standard Homey Flows (with 2-hour backup protection). |
+| `manage_advanced_flow` | Designs, connects, updates, deletes, or restores Advanced Flows with automatic DAG layout computation. |
+| `discover_flow_cards` | Lists available action, trigger, or condition cards for a specific device, app, or system manager. |
+| `run_action_card` | Executes device-specific action cards with arguments and returns output tokens / images. |
+| `get_device_image` | Retrieves the current image or webcam snapshot from a camera device. |
+| `get_device_logs` | Fetches historical data, averages, and time-series sensor trends across configurable resolutions. |
+| `manage_device_firmware` | Scans for available firmware updates across all devices and installs OTA updates on Matter nodes. |
+| `trigger_flow` | Triggers a Homey Flow by name via the HomeyScript execution proxy. |
+
+---
+
+## 📦 Technical Stack & Architecture
+
+- **AI SDK**: `@google/genai` (v2.7.0+)
+- **Homey API**: `homey-api` (v3.19.1 - Local API v3)
+- **Compiler**: `@vercel/ncc` (v0.38.4)
+- **Runtime**: Homey Pro Apps SDK v3 (Node.js)
+
+```
+com.dimapp.geminiai/
+├── app.src.js            # Main application source entrypoint
+├── dist/index.js         # Compiled bundle created by ncc
+├── lib/
+│   ├── GeminiClient.js   # GenAI orchestrator, caching, conversation memory, tool calling loop
+│   ├── HomeyMCPAdapter.js# Bridge between Gemini function declarations and Homey Local API
+│   ├── ModelConfig.js    # Model routing definitions, deprecation fallbacks, settings migration
+│   ├── Scheduler.js      # Short (<24h) and long (>=24h) timer engine with settings persistence
+│   ├── SystemInstruction.js # Dynamic ISO date/time, timezone, and locale context injector
+│   ├── ToolSchema.js     # Function declaration schemas for Gemini tools
+│   └── managers/         # Domain managers: DeviceManager, DiscoveryManager, FlowManager
+├── settings/             # Settings SPA view (index.html)
+└── widgets/gemini_chat/  # Dashboard Chat Widget (non-blocking task queue)
+```
+
+---
+
+## 🔒 Privacy & Security
+
+- **Local Execution**: Smart home device discovery and execution are performed directly on your local Homey Pro via `HomeyAPIV3Local`.
+- **API Key Storage**: Stored securely in Homey's encrypted persistent settings store.
+- **Data Transmission**: Prompts, images, and tool responses are transmitted directly and securely to Google Gemini APIs via TLS.
+
+---
+
+## 📄 License & Support
+
+- **Author**: Simone Di Maio
+- **Repository**: [com.dimapp.geminiai](https://github.com/s-dimaio/com.dimapp.geminiai)
+- **Issues & Feedback**: [GitHub Issues](https://github.com/s-dimaio/com.dimapp.geminiai/issues)
+- **License**: GNU General Public License v3.0 (GPL-3.0)

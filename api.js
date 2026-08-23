@@ -2,7 +2,7 @@
 
 /**
  * Web API for Gemini AI App
- * Exposes endpoints for settings page to manage scheduled commands
+ * Exposes endpoints for settings page to manage scheduled commands and model configuration
  */
 module.exports = {
   /**
@@ -168,5 +168,32 @@ ${body.text}`;
         error: error.message || 'Error communicating with Gemini'
       };
     }
+  },
+
+  /**
+   * GET /api/app/com.dimapp.geminiai/models-config
+   * Get supported models and default configuration for UI settings
+   *
+   * @public
+   * @param {object} context
+   * @param {import('homey')} context.homey
+   * @returns {Promise<{ success: boolean, defaultModels?: object, supportedModels?: string[], modelI18nKeys?: object, error?: string }>}
+   */
+  async getModelsConfig({ homey }) {
+    const modelConfig = homey.app?.modelConfig;
+
+    if (!modelConfig) {
+      return {
+        success: false,
+        error: 'GeminiApp not initialized yet.'
+      };
+    }
+
+    return {
+      success: true,
+      defaultModels: modelConfig.DEFAULT_MODELS,
+      supportedModels: modelConfig.supportedModels || modelConfig.SUPPORTED_MODELS,
+      modelI18nKeys: modelConfig.modelI18nKeys || modelConfig.MODEL_I18N_KEYS
+    };
   }
 };

@@ -183,6 +183,15 @@ module.exports = {
 
         let response;
         if (
+          errorStr.includes('404') ||
+          errorStr.includes('not_found') ||
+          errorStr.includes('no longer available') ||
+          errorStr.includes('is not found') ||
+          errorDetails.includes('not_found') ||
+          errorDetails.includes('no longer available')
+        ) {
+          response = homey.__('prompt.error.model_not_available') || 'The selected Gemini model is no longer available. Please select another model in app settings.';
+        } else if (
           errorStr.includes('429') ||
           errorStr.includes('quota') ||
           errorStr.includes('resource_exhausted') ||
@@ -191,11 +200,13 @@ module.exports = {
         ) {
           response = homey.__('prompt.error.rate_limit_exceeded') || 'Rate limit or daily quota exceeded. Please try again later.';
         } else if (
-          errorStr.includes('400') &&
-          (errorStr.includes('key') ||
-            errorDetails.includes('key') ||
-            errorStr.includes('api_key') ||
-            errorDetails.includes('api_key'))
+          errorStr.includes('api_key_invalid') ||
+          errorStr.includes('invalid api key') ||
+          errorStr.includes('api key not valid') ||
+          errorStr.includes('unauthenticated') ||
+          errorStr.includes('401') ||
+          errorStr.includes('403') ||
+          (errorStr.includes('400') && (errorStr.includes('key') || errorStr.includes('api_key')))
         ) {
           response = homey.__('prompt.error.api_key_invalid') || 'Invalid API Key. Please verify in app settings.';
         } else if (
@@ -204,9 +215,15 @@ module.exports = {
           errorStr.includes('high demand')
         ) {
           response = homey.__('prompt.error.service_unavailable') || 'Gemini servers are busy. Please try again.';
+        } else if (
+          errorStr.includes('econnreset') ||
+          errorStr.includes('etimedout') ||
+          errorStr.includes('enotfound') ||
+          errorStr.includes('fetch failed')
+        ) {
+          response = homey.__('prompt.error.network_error') || 'Unable to connect to Google Gemini servers. Please check your internet connection.';
         } else {
-          const genericMsg = homey.__('widget.chat.error.generic') || 'An error occurred.';
-          response = `${genericMsg} Details: ${error.message}`;
+          response = homey.__('widget.chat.error.generic') || 'An error occurred. Please try again.';
         }
 
         _activeTasks.set(taskId, { status: 'error', response, createdAt: Date.now() });

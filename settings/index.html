@@ -482,17 +482,7 @@
           <!-- Conversational AI Model -->
           <div class="homey-form-group">
             <label class="homey-form-label" for="chatModelSelect" data-i18n="settings.api.model_chat_label"></label>
-            <select class="homey-form-select" id="chatModelSelect">
-              <option value="gemini-2.5-flash-lite" data-i18n="settings.api.models.flash_lite"></option>
-              <option value="gemini-2.5-flash" data-i18n="settings.api.models.flash"></option>
-              <option value="gemini-2.5-pro" data-i18n="settings.api.models.pro"></option>
-              <option value="gemini-3-flash-preview" data-i18n="settings.api.models.flash3_preview"></option>
-              <option value="gemini-3.1-flash-lite" data-i18n="settings.api.models.flash3_lite"></option>
-              <option value="gemini-3.1-pro-preview" data-i18n="settings.api.models.pro3_preview"></option>
-              <option value="gemini-3.5-flash-lite" data-i18n="settings.api.models.flash35_lite"></option>
-              <option value="gemini-3.5-flash" data-i18n="settings.api.models.flash35"></option>
-              <option value="gemini-3.6-flash" data-i18n="settings.api.models.flash36"></option>
-            </select>
+            <select class="homey-form-select" id="chatModelSelect"></select>
             <small class="homey-form-help" style="display:block; margin-top:5px; opacity:0.8;"
               data-i18n="settings.api.model_chat_help"></small>
           </div>
@@ -500,17 +490,7 @@
           <!-- Basic Smart Home Model -->
           <div class="homey-form-group" style="margin-top: 20px;">
             <label class="homey-form-label" for="modelSelectShGeneric" data-i18n="settings.api.model_sh_generic_label"></label>
-            <select class="homey-form-select" id="modelSelectShGeneric">
-              <option value="gemini-2.5-flash-lite" data-i18n="settings.api.models.flash_lite"></option>
-              <option value="gemini-2.5-flash" data-i18n="settings.api.models.flash"></option>
-              <option value="gemini-2.5-pro" data-i18n="settings.api.models.pro"></option>
-              <option value="gemini-3-flash-preview" data-i18n="settings.api.models.flash3_preview"></option>
-              <option value="gemini-3.1-flash-lite" data-i18n="settings.api.models.flash3_lite"></option>
-              <option value="gemini-3.1-pro-preview" data-i18n="settings.api.models.pro3_preview"></option>
-              <option value="gemini-3.5-flash-lite" data-i18n="settings.api.models.flash35_lite"></option>
-              <option value="gemini-3.5-flash" data-i18n="settings.api.models.flash35"></option>
-              <option value="gemini-3.6-flash" data-i18n="settings.api.models.flash36"></option>
-            </select>
+            <select class="homey-form-select" id="modelSelectShGeneric"></select>
             <small class="homey-form-help" style="display:block; margin-top:5px; opacity:0.8;"
               data-i18n="settings.api.model_sh_generic_help"></small>
           </div>
@@ -518,17 +498,7 @@
           <!-- Automation Management Model -->
           <div class="homey-form-group" style="margin-top: 20px;">
             <label class="homey-form-label" for="modelSelectShFlow" data-i18n="settings.api.model_sh_flow_label"></label>
-            <select class="homey-form-select" id="modelSelectShFlow">
-              <option value="gemini-2.5-flash-lite" data-i18n="settings.api.models.flash_lite"></option>
-              <option value="gemini-2.5-flash" data-i18n="settings.api.models.flash"></option>
-              <option value="gemini-2.5-pro" data-i18n="settings.api.models.pro"></option>
-              <option value="gemini-3-flash-preview" data-i18n="settings.api.models.flash3_preview"></option>
-              <option value="gemini-3.1-flash-lite" data-i18n="settings.api.models.flash3_lite"></option>
-              <option value="gemini-3.1-pro-preview" data-i18n="settings.api.models.pro3_preview"></option>
-              <option value="gemini-3.5-flash-lite" data-i18n="settings.api.models.flash35_lite"></option>
-              <option value="gemini-3.5-flash" data-i18n="settings.api.models.flash35"></option>
-              <option value="gemini-3.6-flash" data-i18n="settings.api.models.flash36"></option>
-            </select>
+            <select class="homey-form-select" id="modelSelectShFlow"></select>
             <small class="homey-form-help" style="display:block; margin-top:5px; opacity:0.8;"
               data-i18n="settings.api.model_sh_flow_help"></small>
           </div>
@@ -888,56 +858,121 @@
         }
       }
 
-      modelSelectShGenericElement.addEventListener('change', updateGoogleSearchWarning);
-      modelSelectShFlowElement.addEventListener('change', updateGoogleSearchWarning);
-
-      // Load the saved Generic Smart Home Model from Homey settings
-      Homey.get("gemini_model_sh_generic", function (err, modelGeneric) {
-        if (err) return console.error("Error loading Generic Model:", err);
-        if (modelGeneric) {
-          modelSelectShGenericElement.value = modelGeneric;
-        } else {
-          // Fallback to old setting or default
-          Homey.get("gemini_model", function(err, oldModel) {
-             if (oldModel) {
-                 modelSelectShGenericElement.value = oldModel;
-             } else {
-                 modelSelectShGenericElement.value = "gemini-3.1-flash-lite";
-             }
-             updateGoogleSearchWarning();
-          });
+      /**
+       * Sets the value of a select element, falling back to a default value if the target
+       * value is missing, empty, or does not match any available option in the dropdown.
+       *
+       * @param {HTMLSelectElement} selectEl - The select element to set value on.
+       * @param {?string} value - The model value from settings.
+       * @param {string} defaultFallback - The default fallback model value.
+       */
+      function setSelectValueWithFallback(selectEl, value, defaultFallback) {
+        if (value) {
+          selectEl.value = value;
         }
-        updateGoogleSearchWarning();
+        if (selectEl.selectedIndex === -1 || !selectEl.value) {
+          selectEl.value = defaultFallback;
+        }
+      }
+
+      /**
+       * Checks if the selected model belongs to the Gemini 2.5 family and displays a warning toast.
+       *
+       * @private
+       * @param {string} modelValue - The selected model identifier.
+       * @returns {void}
+       */
+      function checkGemini25Selection(modelValue) {
+        if (modelValue && modelValue.indexOf('gemini-2.5') !== -1) {
+          showToast(Homey.__("settings.api.warning_gemini25_apikey"), 'warning');
+        }
+      }
+
+      chatModelSelectElement.addEventListener('change', function () {
+        checkGemini25Selection(this.value);
       });
 
-      // Load the saved Flow Smart Home Model from Homey settings
-      Homey.get("gemini_model_sh_flow", function (err, modelFlow) {
-        if (err) return console.error("Error loading Flow Model:", err);
-        if (modelFlow) {
-          modelSelectShFlowElement.value = modelFlow;
-        } else {
-          // Fallback to old setting or default
-          Homey.get("gemini_model", function(err, oldModel) {
-             if (oldModel) {
-                 modelSelectShFlowElement.value = oldModel;
-             } else {
-                 modelSelectShFlowElement.value = "gemini-3.5-flash";
-             }
-             updateGoogleSearchWarning();
-          });
-        }
+      modelSelectShGenericElement.addEventListener('change', function () {
         updateGoogleSearchWarning();
+        checkGemini25Selection(this.value);
       });
 
-      // Load the saved Chat Model from Homey settings
-      Homey.get("gemini_model_chat", function (err, chatModel) {
-        if (err) return console.error("Error loading Gemini Chat Model:", err);
-        if (chatModel) {
-          chatModelSelectElement.value = chatModel;
-        } else {
-          // Default to gemini-2.5-flash-lite if not set
-          chatModelSelectElement.value = "gemini-2.5-flash-lite";
+      modelSelectShFlowElement.addEventListener('change', function () {
+        updateGoogleSearchWarning();
+        checkGemini25Selection(this.value);
+      });
+
+      /**
+       * Populates a select element with model options and localizes their display names.
+       *
+       * @private
+       * @param {HTMLSelectElement} selectEl - The select element to populate.
+       * @param {string[]} models - Array of model identifier strings.
+       * @param {Object<string, string>} i18nKeys - Mapping of model IDs to translation keys.
+       * @returns {void}
+       */
+      function populateModelSelect(selectEl, models, i18nKeys) {
+        selectEl.innerHTML = '';
+        models.forEach(function (modelId) {
+          var option = document.createElement('option');
+          option.value = modelId;
+          var i18nKey = i18nKeys && i18nKeys[modelId];
+          option.textContent = i18nKey ? (Homey.__(i18nKey) || modelId) : modelId;
+          selectEl.appendChild(option);
+        });
+      }
+
+      // Fetch dynamic model configuration from backend API
+      Homey.api('GET', '/models-config', null, function (err, config) {
+        var defaultModels = (config && config.defaultModels) || {
+          chat: 'gemini-3.1-flash-lite',
+          shGeneric: 'gemini-3.1-flash-lite',
+          shFlow: 'gemini-3.7-flash'
+        };
+        var supportedModels = (config && config.supportedModels) || [];
+        var modelI18nKeys = (config && config.modelI18nKeys) || {};
+
+        if (supportedModels.length > 0) {
+          populateModelSelect(chatModelSelectElement, supportedModels, modelI18nKeys);
+          populateModelSelect(modelSelectShGenericElement, supportedModels, modelI18nKeys);
+          populateModelSelect(modelSelectShFlowElement, supportedModels, modelI18nKeys);
         }
+
+        // Load the saved Generic Smart Home Model from Homey settings
+        Homey.get("gemini_model_sh_generic", function (err, modelGeneric) {
+          if (err) return console.error("Error loading Generic Model:", err);
+          if (modelGeneric) {
+            setSelectValueWithFallback(modelSelectShGenericElement, modelGeneric, defaultModels.shGeneric);
+          } else {
+            // Fallback to old setting or default
+            Homey.get("gemini_model", function (err, oldModel) {
+              setSelectValueWithFallback(modelSelectShGenericElement, oldModel, defaultModels.shGeneric);
+              updateGoogleSearchWarning();
+            });
+          }
+          updateGoogleSearchWarning();
+        });
+
+        // Load the saved Flow Smart Home Model from Homey settings
+        Homey.get("gemini_model_sh_flow", function (err, modelFlow) {
+          if (err) return console.error("Error loading Flow Model:", err);
+          if (modelFlow) {
+            setSelectValueWithFallback(modelSelectShFlowElement, modelFlow, defaultModels.shFlow);
+          } else {
+            // Fallback to old setting or default
+            Homey.get("gemini_model", function (err, oldModel) {
+              setSelectValueWithFallback(modelSelectShFlowElement, oldModel, defaultModels.shFlow);
+              updateGoogleSearchWarning();
+            });
+          }
+          updateGoogleSearchWarning();
+        });
+
+        // Load the saved Chat Model from Homey settings
+        Homey.get("gemini_model_chat", function (err, chatModel) {
+          if (err) return console.error("Error loading Gemini Chat Model:", err);
+          setSelectValueWithFallback(chatModelSelectElement, chatModel, defaultModels.chat);
+        });
       });
 
       // Load saved Custom Instructions

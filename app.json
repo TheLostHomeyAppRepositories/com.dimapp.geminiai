@@ -65,6 +65,10 @@
     "generateCustomPrompt": {
       "method": "POST",
       "path": "/generate-custom-prompt"
+    },
+    "getModelsConfig": {
+      "method": "GET",
+      "path": "/models-config"
     }
   },
   "flow": {

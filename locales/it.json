@@ -45,7 +45,8 @@
                 "pro3_preview": "Gemini 3.1 Pro Preview",
                 "flash35_lite": "Gemini 3.5 Flash-Lite",
                 "flash35": "Gemini 3.5 Flash",
-                "flash36": "Gemini 3.6 Flash"
+                "flash36": "Gemini 3.6 Flash",
+                "flash37": "Gemini 3.7 Flash"
             },
             "pool_size_label": "Numero Immagini Simultanee",
             "pool_size_help": "Numero di immagini pre-allocate per richieste simultanee 'Invia Prompt con Immagine'. Un numero elevato assorbe molta memoria con rischio di crash dell'app. Ogni modifica richiede il riavvio dell'app per avere effetto.",
@@ -58,6 +59,7 @@
             "enable_google_search_checkbox_text": "Abilita ricerche in tempo reale",
             "enable_google_search_help": "Consente a Gemini di effettuare ricerche sul Web in tempo reale per rispondere a domande generali (es. meteo, notizie).",
             "enable_google_search_warning_gemini25": "Attenzione: uno o più modelli Smart Home selezionati appartengono alla famiglia Gemini 2.5. Questi modelli non supportano Google Search combinato con i comandi Smart Home. Google Search verrà disabilitato automaticamente solo per le richieste Smart Home.",
+            "warning_gemini25_apikey": "Attenzione: i modelli Gemini 2.5 sono in dismissione e potrebbero non essere disponibili sulle API Key create di recente.",
             "include_hidden_grouped_label": "Dispositivi Nascosti e Raggruppati",
             "include_hidden_grouped_checkbox_text": "Includi dispositivi nascosti e membri di gruppi",
             "include_hidden_grouped_help": "Consente a Gemini di vedere e controllare anche i dispositivi contrassegnati come nascosti o che fanno parte di un gruppo virtuale (di default disattivato)."
@@ -136,7 +138,9 @@
             "no_device_image": "Nessuna immagine disponibile per questo dispositivo",
             "image_too_large": "Immagine troppo grande (max 5MB)",
             "fetch_image_failed": "Errore nel recupero dell'immagine del dispositivo",
-            "not_answerable": "Gemini non può valutare questa condizione: __explanation__"
+            "not_answerable": "Gemini non può valutare questa condizione: __explanation__",
+            "model_not_available": "Il modello Gemini selezionato non è più disponibile o non è supportato per la tua chiave API. Seleziona un modello diverso nelle impostazioni dell'app (ad es. Gemini 3.5 Flash Lite o Gemini 3.1 Flash Lite).",
+            "network_error": "Impossibile connettersi ai server di Google Gemini. Verifica la connessione internet e riprova."
         },
         "firmware": {
             "zigbee_verified": "Firmware Zigbee verificato.",

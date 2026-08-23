@@ -3,8 +3,19 @@
 const Homey = require('homey');
 const { Readable } = require('stream');
 const { GeminiClient } = require('./lib/GeminiClient');
+const ModelConfig = require('./lib/ModelConfig');
 
 module.exports = class GeminiApp extends Homey.App {
+
+  /**
+   * Exposes the ModelConfig module for Web API endpoints and UI configuration.
+   *
+   * @public
+   * @type {typeof import('./lib/ModelConfig')}
+   */
+  get modelConfig() {
+    return ModelConfig;
+  }
 
   /**
    * onInit is called when the app is initialized.
@@ -12,15 +23,8 @@ module.exports = class GeminiApp extends Homey.App {
   async onInit() {
     this.log('[onInit] GeminiApp has been initialized');
 
-    // Auto-migrate preview model to GA
-    if (this.homey.settings.get('gemini_model') === 'gemini-3.1-flash-lite-preview') {
-      this.homey.settings.set('gemini_model', 'gemini-3.1-flash-lite');
-      this.log('[onInit] Automatically migrated Smart Home model from preview to GA');
-    }
-    if (this.homey.settings.get('gemini_model_chat') === 'gemini-3.1-flash-lite-preview') {
-      this.homey.settings.set('gemini_model_chat', 'gemini-3.1-flash-lite');
-      this.log('[onInit] Automatically migrated Chat model from preview to GA');
-    }
+    // Automatically migrate any deprecated or preview models in settings
+    ModelConfig.migrateSettings(this.homey);
 
     // Initialize the GeminiClient once at startup
     this.initializeGeminiClient();
@@ -72,9 +76,13 @@ module.exports = class GeminiApp extends Homey.App {
   initializeGeminiClient() {
     const apiKey = this.homey.settings.get('gemini_api_key');
     const oldSmartHomeModel = this.homey.settings.get('gemini_model');
-    const shGenericModel = this.homey.settings.get('gemini_model_sh_generic') || oldSmartHomeModel || 'gemini-3.1-flash-lite';
-    const shFlowModel = this.homey.settings.get('gemini_model_sh_flow') || oldSmartHomeModel || 'gemini-3.5-flash';
-    const chatModel = this.homey.settings.get('gemini_model_chat') || 'gemini-2.5-flash-lite';
+    const storedShGeneric = this.homey.settings.get('gemini_model_sh_generic') || oldSmartHomeModel;
+    const storedShFlow = this.homey.settings.get('gemini_model_sh_flow') || oldSmartHomeModel;
+    const storedChat = this.homey.settings.get('gemini_model_chat');
+
+    const shGenericModel = ModelConfig.resolveModel('shGeneric', storedShGeneric);
+    const shFlowModel = ModelConfig.resolveModel('shFlow', storedShFlow);
+    const chatModel = ModelConfig.resolveModel('chat', storedChat);
     const customInstructions = this.homey.settings.get('gemini_custom_instructions');
     const enableGoogleSearch = this.homey.settings.get('gemini_enable_google_search') !== false;
 
@@ -263,33 +271,61 @@ module.exports = class GeminiApp extends Homey.App {
   }
 
   /**
-   * Centralized error handling for flow card errors
+   * Centralized error handling for flow card errors.
+   * Logs full technical details for debugging while returning clear,
+   * conversational, localized error messages to Homey.
+   *
+   * @public
    * @param {string} context - The context where the error occurred
    * @param {Error} error - The error object
-   * @throws {Error} A user-friendly error message
+   * @throws {Error} A user-friendly, conversational error message
    */
   handleFlowError(context, error) {
     this.error(`${context} Error:`, error);
 
-    let errorMessage = error.message;
+    const rawMessage = error.message || '';
+    let cleanMessage = rawMessage;
 
-    // Extract localized error message from Google API errors
+    // Extract clean message if error.message contains an ApiError JSON dump
+    try {
+      const jsonStart = rawMessage.indexOf('{');
+      if (jsonStart !== -1) {
+        const parsed = JSON.parse(rawMessage.slice(jsonStart));
+        if (parsed.error?.message) {
+          cleanMessage = parsed.error.message;
+        }
+      }
+    } catch (_) {
+      // Keep raw message if JSON parsing fails
+    }
+
+    // Extract localized error message from Google API error details if available
     if (Array.isArray(error.errorDetails)) {
       const localized = error.errorDetails.find(
         d => d['@type'] === 'type.googleapis.com/google.rpc.LocalizedMessage' && d.message
       );
       if (localized) {
-        errorMessage = localized.message;
+        cleanMessage = localized.message;
       }
     }
 
-    this.error(`${context} Error message: ${errorMessage}`);
+    this.error(`${context} Error details: ${cleanMessage}`);
 
-    // Check for specific error types and provide localized messages
-    const errorStr = (error.message || '').toLowerCase();
+    // Check for specific error types and provide conversational localized messages
+    const errorStr = (rawMessage + ' ' + (error.stack || '')).toLowerCase();
     const errorDetails = JSON.stringify(error).toLowerCase();
 
-    // Rate limit / quota exceeded errors (429)
+    // 1. Model deprecated / no longer available / not found (404)
+    if (errorStr.includes('404') ||
+      errorStr.includes('not_found') ||
+      errorStr.includes('no longer available') ||
+      errorStr.includes('is not found') ||
+      errorDetails.includes('not_found') ||
+      errorDetails.includes('no longer available')) {
+      throw new Error(this.homey.__("prompt.error.model_not_available"));
+    }
+
+    // 2. Rate limit / quota exceeded errors (429)
     if (errorStr.includes('429') ||
       errorStr.includes('quota') ||
       errorStr.includes('resource_exhausted') ||
@@ -298,7 +334,7 @@ module.exports = class GeminiApp extends Homey.App {
       throw new Error(this.homey.__("prompt.error.rate_limit_exceeded"));
     }
 
-    // Service Unavailable / High Demand (503)
+    // 3. Service Unavailable / High Demand (503)
     if (errorStr.includes('503') ||
       errorStr.includes('service unavailable') ||
       errorStr.includes('high demand') ||
@@ -307,22 +343,34 @@ module.exports = class GeminiApp extends Homey.App {
       throw new Error(this.homey.__("prompt.error.service_unavailable"));
     }
 
-    // Content blocked by safety filters
+    // 4. Content blocked by safety filters
     if (errorStr.includes('blocked') ||
       errorStr.includes('safety') ||
       errorDetails.includes('blocked_reason')) {
       throw new Error(this.homey.__("prompt.error.content_blocked"));
     }
 
-    // API key invalid
+    // 5. API key invalid / unauthenticated (400 / 401 / 403)
     if (errorStr.includes('api_key_invalid') ||
       errorStr.includes('invalid api key') ||
-      errorStr.includes('api key not valid')) {
+      errorStr.includes('api key not valid') ||
+      errorStr.includes('unauthenticated') ||
+      errorStr.includes('401') ||
+      errorStr.includes('403') ||
+      (errorStr.includes('400') && (errorStr.includes('key') || errorStr.includes('api_key')))) {
       throw new Error(this.homey.__("prompt.error.api_key_invalid"));
     }
 
-    // Generic error fallback
-    throw new Error(this.homey.__("prompt.error.generic", { error: errorMessage }));
+    // 6. Network / connection errors
+    if (errorStr.includes('econnreset') ||
+      errorStr.includes('etimedout') ||
+      errorStr.includes('enotfound') ||
+      errorStr.includes('fetch failed')) {
+      throw new Error(this.homey.__("prompt.error.network_error"));
+    }
+
+    // Generic error fallback with cleaned message
+    throw new Error(this.homey.__("prompt.error.generic", { error: cleanMessage }));
   }
 
   /**

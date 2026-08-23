@@ -1,6 +1,6 @@
 {
   "name": "com.dimapp.geminiforhomey",
-  "version": "3.3.6",
+  "version": "3.3.7",
   "main": "app.js",
   "scripts": {
     "build": "ncc build app.src.js -o dist -e homey --minify",

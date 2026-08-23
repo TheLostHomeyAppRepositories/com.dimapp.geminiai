@@ -1,6 +1,6 @@
 {
   "id": "com.dimapp.geminiai",
-  "version": "3.3.6",
+  "version": "3.3.7",
   "compatibility": ">=12.4.0",
   "sdk": 3,
   "platforms": [
@@ -64,6 +64,10 @@
     "generateCustomPrompt": {
       "method": "POST",
       "path": "/generate-custom-prompt"
+    },
+    "getModelsConfig": {
+      "method": "GET",
+      "path": "/models-config"
     }
   }
 }
