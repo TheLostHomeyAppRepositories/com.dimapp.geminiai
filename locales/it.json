@@ -140,6 +140,7 @@
             "fetch_image_failed": "Errore nel recupero dell'immagine del dispositivo",
             "not_answerable": "Gemini non può valutare questa condizione: __explanation__",
             "model_not_available": "Il modello Gemini selezionato non è più disponibile o non è supportato per la tua chiave API. Seleziona un modello diverso nelle impostazioni dell'app (ad es. Gemini 3.5 Flash Lite o Gemini 3.1 Flash Lite).",
+            "timeout": "La richiesta a Google Gemini è scaduta per timeout. Il modello ha impiegato troppo tempo per rispondere. Riprova con una richiesta più semplice o seleziona un altro modello nelle impostazioni dell'app.",
             "network_error": "Impossibile connettersi ai server di Google Gemini. Verifica la connessione internet e riprova."
         },
         "firmware": {

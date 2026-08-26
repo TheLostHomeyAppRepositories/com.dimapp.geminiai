@@ -361,9 +361,27 @@ module.exports = class GeminiApp extends Homey.App {
       throw new Error(this.homey.__("prompt.error.api_key_invalid"));
     }
 
-    // 6. Network / connection errors
-    if (errorStr.includes('econnreset') ||
+    // 6. Request Timeout errors (504, DEADLINE_EXCEEDED, UND_ERR_HEADERS_TIMEOUT, HeadersTimeoutError, AbortError, connect timeout)
+    if (errorStr.includes('504') ||
+      errorStr.includes('deadline_exceeded') ||
+      errorStr.includes('deadline expired') ||
+      errorStr.includes('deadline') ||
+      errorStr.includes('headerstimeouterror') ||
+      errorStr.includes('headers timeout') ||
+      errorStr.includes('und_err_headers_timeout') ||
+      errorStr.includes('timed out') ||
       errorStr.includes('etimedout') ||
+      errorStr.includes('timeout') ||
+      errorStr.includes('aborterror') ||
+      errorDetails.includes('504') ||
+      errorDetails.includes('deadline_exceeded') ||
+      error?.cause?.code === 'UND_ERR_HEADERS_TIMEOUT' ||
+      error?.cause?.name === 'HeadersTimeoutError') {
+      throw new Error(this.homey.__("prompt.error.timeout"));
+    }
+
+    // 7. Network / connection errors
+    if (errorStr.includes('econnreset') ||
       errorStr.includes('enotfound') ||
       errorStr.includes('fetch failed')) {
       throw new Error(this.homey.__("prompt.error.network_error"));

@@ -206,5 +206,9 @@
   "3.3.8": {
     "en": "(i) Added support for the new Gemini 3.7 Flash model \n(ii) Improved model selection in app settings with informative guidance on the latest versions \n(iii) Improved error and status messages across Flows and the app to make them clearer and more informative \n(iv) Minor bug fixes and performance improvements.",
     "it": "(i) Aggiunto il supporto per il nuovo modello Gemini 3.7 Flash \n(ii) Migliorata la selezione dei modelli nelle impostazioni con avvisi informativi sulle versioni più recenti \n(iii) Migliorata la gestione dei messaggi di errore nei Flow e nell'app per renderli più chiari ed esplicativi \n(iv) Correzione di bug minori e miglioramenti alle prestazioni."
+  },
+  "3.3.9": {
+    "en": "(i) Improved flow discovery and health auditing to detect automations with unavailable cards, missing devices, or uninstalled apps \n(ii) Enhanced error handling and user status messages \n(iii) Minor bug fixes and performance improvements.",
+    "it": "(i) Migliorata la gestione e l'individuazione di flow con schede non disponibili, dispositivi mancanti o app disinstallate \n(ii) Migliorata la gestione degli errori e dei messaggi di stato per l'utente \n(iii) Correzione di bug minori e miglioramenti alle prestazioni."
   }
 }

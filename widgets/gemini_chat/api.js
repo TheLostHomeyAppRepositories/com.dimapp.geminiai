@@ -216,8 +216,25 @@ module.exports = {
         ) {
           response = homey.__('prompt.error.service_unavailable') || 'Gemini servers are busy. Please try again.';
         } else if (
-          errorStr.includes('econnreset') ||
+          errorStr.includes('504') ||
+          errorStr.includes('deadline_exceeded') ||
+          errorStr.includes('deadline expired') ||
+          errorStr.includes('deadline') ||
+          errorStr.includes('headerstimeouterror') ||
+          errorStr.includes('headers timeout') ||
+          errorStr.includes('und_err_headers_timeout') ||
+          errorStr.includes('timed out') ||
           errorStr.includes('etimedout') ||
+          errorStr.includes('timeout') ||
+          errorStr.includes('aborterror') ||
+          errorDetails.includes('504') ||
+          errorDetails.includes('deadline_exceeded') ||
+          error?.cause?.code === 'UND_ERR_HEADERS_TIMEOUT' ||
+          error?.cause?.name === 'HeadersTimeoutError'
+        ) {
+          response = homey.__('prompt.error.timeout') || 'The request to Google Gemini timed out. Please try again or select another model.';
+        } else if (
+          errorStr.includes('econnreset') ||
           errorStr.includes('enotfound') ||
           errorStr.includes('fetch failed')
         ) {
